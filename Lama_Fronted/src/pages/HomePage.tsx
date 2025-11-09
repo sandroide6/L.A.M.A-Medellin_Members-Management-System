@@ -1,18 +1,23 @@
 import React, { useEffect, useState } from "react";
+import Inicio from "../components/Inicio";
 import MiembroForm from "../components/MiembroForm";
 import MiembrosList from "../components/MiembrosList";
+import Estadisticas from "../components/Estadisticas";
+import Reportes from "../components/Reportes";
 import { getMiembros, deleteMiembro, Miembro } from "../services/MiembroService";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import api from "../api"; // ✅ Importa Axios con autenticación Firebase
 
 interface HomePageProps {
   user: any;
 }
 
+type TabType = "inicio" | "registro" | "listado" | "estadisticas" | "reportes";
+
 export default function HomePage({ user }: HomePageProps) {
   const [miembros, setMiembros] = useState<Miembro[]>([]);
   const [seleccionado, setSeleccionado] = useState<Miembro | null>(null);
+  const [tabActiva, setTabActiva] = useState<TabType>("inicio");
 
   const cargarMiembros = async () => {
     try {
@@ -26,24 +31,13 @@ export default function HomePage({ user }: HomePageProps) {
   useEffect(() => {
     if (user) {
       cargarMiembros();
-
-      // 🔹 Prueba de conexión con backend autenticado
-      const testUser = async () => {
-        try {
-          const res = await api.get("/miembros/check-user");
-          console.log("✅ Backend reconoce al usuario:", res.data);
-        } catch (err) {
-          console.error("❌ Error al verificar usuario:", err);
-        }
-      };
-
-      testUser();
     }
   }, [user]);
 
   const handleSave = () => {
     setSeleccionado(null);
     cargarMiembros();
+    setTabActiva("listado");
   };
 
   const handleDelete = async (id: string) => {
@@ -53,162 +47,116 @@ export default function HomePage({ user }: HomePageProps) {
     }
   };
 
+  const handleEdit = (miembro: Miembro) => {
+    setSeleccionado(miembro);
+    setTabActiva("registro");
+  };
+
   const logout = async () => await signOut(auth);
 
-  // 🔹 Estilos con animaciones y modernización
-  const containerStyle: React.CSSProperties = {
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    minHeight: "100vh",
-    background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
-    color: "#f5f5f5",
-    padding: "30px 40px",
-    transition: "background 0.3s ease",
-  };
-
-  const headerStyle: React.CSSProperties = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 40,
-    padding: "14px 24px",
-    borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.05)",
-    boxShadow: "0 12px 28px rgba(0,0,0,0.5)",
-    backdropFilter: "blur(10px)",
-    transition: "all 0.3s ease",
-  };
-
-  const titleStyle: React.CSSProperties = {
-    fontSize: 30,
-    margin: 0,
-    color: "#ffffff",
-    transition: "color 0.3s ease",
-  };
-
-  const spanHighlightStyle: React.CSSProperties = {
-    color: "#4dabf7",
-  };
-
-  const userInfoStyle: React.CSSProperties = {
-    display: "flex",
-    alignItems: "center",
-    gap: 12,
-  };
-
-  const avatarStyle: React.CSSProperties = {
-    width: 44,
-    height: 44,
-    borderRadius: "50%",
-    border: "2px solid #4dabf7",
-    transition: "transform 0.3s ease",
-  };
-
-  const userNameStyle: React.CSSProperties = {
-    fontWeight: 600,
-    color: "#e0e0e0",
-    transition: "color 0.3s ease",
-  };
-
-  const logoutButtonStyle: React.CSSProperties = {
-    padding: "8px 16px",
-    backgroundColor: "#c62828",
-    color: "white",
-    border: "none",
-    borderRadius: 10,
-    cursor: "pointer",
-    fontWeight: 600,
-    transition: "all 0.3s ease",
-    boxShadow: "0 6px 16px rgba(0,0,0,0.5)",
-  };
-
-  const mainStyle: React.CSSProperties = {
-    display: "flex",
-    flexDirection: "column",
-    gap: 28,
-  };
-
-  const cardStyle: React.CSSProperties = {
-    backgroundColor: "rgba(255,255,255,0.05)",
-    padding: 28,
-    borderRadius: 18,
-    boxShadow: "0 14px 35px rgba(0,0,0,0.6)",
-    backdropFilter: "blur(12px)",
-    transition: "transform 0.3s ease, box-shadow 0.3s ease",
+  const renderContent = () => {
+    switch (tabActiva) {
+      case "inicio":
+        return <Inicio onNavigate={setTabActiva} />;
+      case "registro":
+        return (
+          <MiembroForm
+            miembroSeleccionado={seleccionado}
+            onSave={handleSave}
+            onCancel={() => {
+              setSeleccionado(null);
+              setTabActiva("inicio");
+            }}
+          />
+        );
+      case "listado":
+        return (
+          <MiembrosList
+            miembros={miembros}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        );
+      case "estadisticas":
+        return <Estadisticas miembros={miembros} />;
+      case "reportes":
+        return <Reportes miembros={miembros} />;
+      default:
+        return <Inicio onNavigate={setTabActiva} />;
+    }
   };
 
   return (
-    <div style={containerStyle}>
-      {/* Header */}
-      <header style={headerStyle}>
-        <h1 style={titleStyle}>
-          🏍️ <span style={spanHighlightStyle}>L.A.M.A Medellín</span>
-        </h1>
-        <div style={userInfoStyle}>
-          <img
-            src={user.photoURL}
-            alt="avatar"
-            style={avatarStyle}
-            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.15)")}
-            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
-          />
-          <span style={userNameStyle}>{user.displayName}</span>
+    <div className="homepage-container">
+      <header className="header-modern">
+        <div className="header-left">
+          <h1 className="logo">
+            <span className="bike-icon">🏍️</span> L.A.M.A Medellín
+          </h1>
+        </div>
+
+        <nav className="navigation-tabs">
           <button
-            style={logoutButtonStyle}
-            onClick={logout}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#b71c1c")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#c62828")}
+            className={`nav-tab ${tabActiva === "inicio" ? "active" : ""}`}
+            onClick={() => {
+              setTabActiva("inicio");
+              setSeleccionado(null);
+            }}
           >
-            Cerrar sesión
+            Inicio
+          </button>
+          <button
+            className={`nav-tab ${tabActiva === "registro" ? "active" : ""}`}
+            onClick={() => {
+              setTabActiva("registro");
+              setSeleccionado(null);
+            }}
+          >
+            Registro
+          </button>
+          <button
+            className={`nav-tab ${tabActiva === "listado" ? "active" : ""}`}
+            onClick={() => {
+              setTabActiva("listado");
+              setSeleccionado(null);
+            }}
+          >
+            Listado
+          </button>
+          <button
+            className={`nav-tab ${tabActiva === "estadisticas" ? "active" : ""}`}
+            onClick={() => {
+              setTabActiva("estadisticas");
+              setSeleccionado(null);
+            }}
+          >
+            Estadísticas
+          </button>
+          <button
+            className={`nav-tab ${tabActiva === "reportes" ? "active" : ""}`}
+            onClick={() => {
+              setTabActiva("reportes");
+              setSeleccionado(null);
+            }}
+          >
+            Reportes
+          </button>
+        </nav>
+
+        <div className="header-right">
+          <div className="user-info">
+            <img src={user.photoURL} alt="avatar" className="user-avatar" />
+            <span className="user-name">{user.displayName || user.email}</span>
+          </div>
+          <button className="btn-logout" onClick={logout}>
+            Cerrar Sesión
           </button>
         </div>
       </header>
 
-      {/* Contenido */}
-      <main style={mainStyle}>
-        {/* Formulario */}
-        <div
-          style={cardStyle}
-          onMouseOver={(e) => {
-            const el = e.currentTarget;
-            el.style.transform = "translateY(-4px)";
-            el.style.boxShadow = "0 20px 45px rgba(0,0,0,0.7)";
-          }}
-          onMouseOut={(e) => {
-            const el = e.currentTarget;
-            el.style.transform = "translateY(0)";
-            el.style.boxShadow = "0 14px 35px rgba(0,0,0,0.6)";
-          }}
-        >
-          <MiembroForm
-            miembroSeleccionado={seleccionado}
-            onSave={handleSave}
-            onCancel={() => setSeleccionado(null)}
-          />
-        </div>
-
-        {/* Lista */}
-        <div
-          style={cardStyle}
-          onMouseOver={(e) => {
-            const el = e.currentTarget;
-            el.style.transform = "translateY(-4px)";
-            el.style.boxShadow = "0 20px 45px rgba(0,0,0,0.7)";
-          }}
-          onMouseOut={(e) => {
-            const el = e.currentTarget;
-            el.style.transform = "translateY(0)";
-            el.style.boxShadow = "0 14px 35px rgba(0,0,0,0.6)";
-          }}
-        >
-          <MiembrosList
-            miembros={miembros}
-            onEdit={setSeleccionado}
-            onDelete={handleDelete}
-          />
-        </div>
+      <main className="main-content">
+        {renderContent()}
       </main>
     </div>
   );
 }
-
-export {};

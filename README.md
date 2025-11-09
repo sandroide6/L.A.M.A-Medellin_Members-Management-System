@@ -120,7 +120,7 @@ dotnet restore
 
 ### 4. Ejecutar en Desarrollo
 
-#### Opción 1: Ejecutar Manualmente
+#### Ejecutar Manualmente
 
 **Terminal 1 - Backend:**
 ```bash
@@ -129,22 +129,12 @@ ASPNETCORE_URLS=http://localhost:8000 dotnet run
 ```
 El backend estará disponible en `http://localhost:8000`
 
-**Nota**: En Windows PowerShell usa:
-```powershell
-$env:ASPNETCORE_URLS="http://localhost:8000"; dotnet run
-```
-
 **Terminal 2 - Frontend:**
 ```bash
 cd Lama_Fronted
 npm start
 ```
 El frontend estará disponible en `http://localhost:5000`
-
-#### Opción 2: Usar Scripts (Replit)
-Si estás en Replit, los workflows ya están configurados:
-- **Backend**: `cd Lama_Backend && dotnet run`
-- **Frontend**: `cd Lama_Fronted && npm start`
 
 ### 5. Acceder a la Aplicación
 1. Abre tu navegador en `http://localhost:5000`
@@ -194,7 +184,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/firebase-key.json
 1. En tu servicio de Render, ve a "Environment"
 2. Click en "Secret Files"
 3. Crea un nuevo archivo secreto:
-   - **Filename**: `/etc/secrets/firebase-key.json`
+   - **Filename**: `firebase-key.json`
    - **Contents**: Pega todo el contenido de tu archivo `firebase-key.json`
 
 #### 5. Deploy
@@ -202,11 +192,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/firebase-key.json
 2. Render automáticamente construirá y desplegará tu backend
 3. Una vez desplegado, copia la URL (ejemplo: `https://lama-backend.onrender.com`)
 
-#### 6. Verificar
-Prueba el endpoint de salud:
-```bash
-curl https://tu-backend-url.onrender.com/api/miembros
-```
+
 
 ### Frontend en Firebase Hosting
 
@@ -320,18 +306,6 @@ Luego, haz commit y push. Render automáticamente re-desplegará.
 - **Backend**: CORS configurado solo para orígenes autorizados
 - **Credenciales**: Almacenadas en variables de entorno y archivos secretos
 
-### Reglas de Firestore Recomendadas
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /miembros/{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
-```
-
 ---
 
 ## 🐛 Solución de Problemas
@@ -351,13 +325,14 @@ service cloud.firestore {
 
 ### Error al exportar PDF/CSV
 - Asegúrate de que las dependencias `jspdf` y `jspdf-autotable` estén instaladas
-- Verifica la consola del navegador para errores específicos
+
 
 ### Render: Backend no inicia
-- Verifica que `firebase-key.json` esté configurado correctamente en Secret Files
+- Verificar que `firebase-key.json` esté configurado correctamente en Secret Files
 - Revisa los logs en el dashboard de Render
 - Asegúrate de que `GOOGLE_APPLICATION_CREDENTIALS` apunte a `/etc/secrets/firebase-key.json`
 
+verificar la consola del navegador para errores específicos
 ---
 
 ## 📝 Estructura del Proyecto
@@ -394,34 +369,10 @@ L.A.M.A-Medell-n-Members-Management-System/
 │   │   └── FirebaseAuthMiddleware.cs
 │   ├── Program.cs
 │   ├── LAMA_API.csproj
-│   └── firebase-key.json (crear)
+│   └── firebase-key.json 
 │
 └── README.md
-```
 
----
 
-## 🤝 Contribuciones
 
-Para contribuir al proyecto:
-1. Fork el repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-caracteristica`)
-3. Commit tus cambios (`git commit -m 'Agrega nueva característica'`)
-4. Push a la rama (`git push origin feature/nueva-caracteristica`)
-5. Abre un Pull Request
-
----
-
-## 📄 Licencia
-
-Este proyecto es privado y pertenece al club L.A.M.A Medellín.
-
----
-
-## 📧 Contacto
-
-Para soporte o consultas sobre el sistema, contacta al administrador del club.
-
----
-
-**Desarrollado con ❤️ para L.A.M.A Medellín 🏍️**
+**Desarrollado por Eldestructor🏍️**

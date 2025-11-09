@@ -1,0 +1,292 @@
+/* ===== Global ===== */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #f5f5f5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* ===== Inputs numéricos y fecha ===== */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { -moz-appearance: textfield; }
+input[type=date]::-webkit-calendar-picker-indicator {
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* ===== Scroll personalizado ===== */
+.scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #4dabf7 rgba(255,255,255,0.05);
+}
+.scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+.scrollbar::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 6px; }
+.scrollbar::-webkit-scrollbar-thumb { background: #4dabf7; border-radius: 6px; }
+.scrollbar::-webkit-scrollbar-thumb:hover { background: #2563eb; }
+
+/* ===== Contenedores premium ===== */
+.miembros-container-premium,
+.form-card-premium {
+  background-color: rgba(255,255,255,0.06);
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+  display: grid;
+  gap: 15px;
+  color: #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+/* ===== Títulos ===== */
+.miembros-header-premium h2,
+.form-card-premium h2 {
+  color: #4dabf7;
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ===== Botones premium ===== */
+.btn-export-premium,
+.btn-edit-premium,
+.btn-delete-premium,
+.form-btn-premium {
+  border: none;
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-weight: 600;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.btn-export-premium { background-color: #10b981; color: #fff; }
+.btn-export-premium:hover { background-color: #059669; }
+
+.btn-edit-premium { background-color: #3b82f6; color: #fff; }
+.btn-edit-premium:hover { background-color: #2563eb; }
+
+.btn-delete-premium { background-color: #ef4444; color: #fff; }
+.btn-delete-premium:hover { background-color: #b91c1c; }
+
+.form-btn-premium { background-color: #4dabf7; color: #fff; }
+.form-btn-premium:hover { background-color: #2563eb; }
+
+/* ===== Filtros y selects ===== */
+.miembros-filtro-premium {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.miembros-filtro-premium select,
+.miembros-filtro-premium input {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 2px solid #444;
+  background-color: #1f1f1f;
+  color: #f5f5f5;
+  font-size: 12px;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s, background 0.3s;
+}
+
+.miembros-filtro-premium select { flex: 0 0 120px; }
+.miembros-filtro-premium input { flex: 1; }
+
+.miembros-filtro-premium select:focus,
+.miembros-filtro-premium input:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 8px rgba(77,171,247,0.5);
+  background-color: #2a2a2a;
+}
+
+/* ===== Encabezado de lista ===== */
+.miembros-header-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* ===== Tabla premium ===== */
+.table-scroll-premium {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 280px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+}
+
+.table-scroll-premium table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 1000px;
+  font-size: 11px;
+}
+
+.table-scroll-premium th,
+.table-scroll-premium td {
+  padding: 3px 6px;
+  border-bottom: 1px solid #334155;
+  text-align: left;
+  color: #f1f1f1;
+  white-space: nowrap;
+}
+
+.table-scroll-premium th {
+  background-color: #1e293b;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  font-weight: 700;
+  font-size: 11px;
+}
+
+/* Hover de filas */
+.tr-hover-premium {
+  transition: background 0.2s, transform 0.1s;
+  cursor: default;
+}
+
+.tr-hover-premium:nth-child(even) { background-color: #0f172a; }
+.tr-hover-premium:nth-child(odd) { background-color: #1e293b; }
+
+.tr-hover-premium:hover {
+  background-color: rgba(77,171,247,0.15);
+  transform: scale(1.0005);
+}
+
+/* Acciones y centrado */
+.td-acciones-premium {
+  display: flex;
+  gap: 3px;
+  justify-content: center;
+}
+
+.td-center-premium {
+  text-align: center;
+  font-style: italic;
+  color: #94a3b8;
+}
+
+/* ===== Formulario premium ===== */
+.form-card-premium {
+  max-width: 920px;
+  margin: 50px auto;
+  padding: 50px;
+  background-color: #1f1f1f;
+  border-radius: 20px;
+  display: grid;
+  gap: 35px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  color: #f1f1f1;
+}
+
+.form-title { text-align: center; color: #4dabf7; font-weight: 700; font-size: 28px; margin-bottom: 30px; }
+.form-section { border-top: 1px solid #333; padding-top: 20px; }
+.form-subtitle { color: #9ca3af; font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+
+.form-fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+.form-field-container { display: flex; flex-direction: column; }
+
+.form-input {
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 2px solid #333;
+  background-color: #2a2a2a;
+  color: #f5f5f5;
+  font-size: 15px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus { border-color: #4dabf7; box-shadow: 0 0 8px rgba(77,171,247,0.5); }
+.form-error { color: #ef4444; font-size: 13px; margin-top: 4px; }
+
+.form-buttons { display: flex; justify-content: center; margin-top: 20px; }
+
+.form-btn-primary,
+.form-btn-cancel {
+  padding: 13px 32px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+}
+
+.form-btn-primary { background-color: #4dabf7; color: #fff; }
+.form-btn-primary:hover { background-color: #2563eb; }
+
+.form-btn-cancel { background-color: #555; color: #fff; margin-left: 15px; }
+.form-btn-cancel:hover { background-color: #333; }
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+.no-spinner { -moz-appearance: textfield; }
+
+/* ===== Responsive: reducir tamaño en tablets ===== */
+@media (max-width: 1024px) {
+  .table-scroll-premium table { font-size: 10px; }
+  .btn-export-premium, .btn-edit-premium, .btn-delete-premium { font-size: 10px; }
+  .form-card-premium { padding: 30px; }
+}
+
+/* ===== Responsive: móviles (hasta 480px) ===== */
+@media (max-width: 480px) {
+  body { font-size: 13px; }
+
+  .miembros-container-premium,
+  .form-card-premium {
+    padding: 10px;
+    gap: 8px;
+  }
+
+  .table-scroll-premium table {
+    min-width: 800px;
+    font-size: 9px;
+  }
+
+  .table-scroll-premium th,
+  .table-scroll-premium td {
+    padding: 2px 4px;
+  }
+
+  .btn-export-premium,
+  .btn-edit-premium,
+  .btn-delete-premium {
+    font-size: 9px;
+    padding: 2px 5px;
+  }
+
+  .miembros-header-premium h2 {
+    font-size: 15px;
+  }
+
+  .form-card-premium {
+    margin: 20px 10px;
+    padding: 15px;
+  }
+
+  .form-fields { grid-template-columns: 1fr; gap: 15px; }
+  .form-input { font-size: 13px; padding: 10px 12px; }
+  .form-btn-primary, .form-btn-cancel { font-size: 13px; padding: 10px 20px; }
+}

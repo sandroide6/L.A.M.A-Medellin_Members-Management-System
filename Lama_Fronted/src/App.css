@@ -1,0 +1,229 @@
+/* ===== APP GLOBAL ===== */
+.App {
+  text-align: center;
+  background: #121212; /* fondo dark moderno */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  color: #f1f1f1;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background 0.3s, color 0.3s;
+}
+
+.App-header {
+  background: linear-gradient(135deg, #1f1f1f, #2a2a2a);
+  width: 100%;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: #f1f1f1;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+  margin-bottom: 20px;
+  transition: transform 0.3s;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #4dabf7;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.App-link:hover {
+  color: #1e40af;
+}
+
+/* ===== Animación ===== */
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ===== SCROLL PERSONALIZADO ===== */
+.scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #4dabf7 rgba(255,255,255,0.05); /* Firefox */
+}
+
+.scrollbar::-webkit-scrollbar {
+  height: 8px;  /* horizontal */
+  width: 8px;   /* vertical */
+}
+
+.scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+  border-radius: 6px;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background: #4dabf7;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #1e40af;
+}
+
+/* ===== BOTONES GLOBALES ===== */
+button {
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.1);
+}
+
+/* ===== INPUTS GLOBALES ===== */
+input, select {
+  background-color: #1f1f1f;
+  color: #f1f1f1;
+  border: 1px solid #333;
+  border-radius: 8px;
+  padding: 6px 10px;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+
+input:focus, select:focus {
+  border-color: #4dabf7;
+  box-shadow: 0 0 8px rgba(77, 171, 247, 0.4);
+}
+
+/* ===== TABLAS ===== */
+table {
+  border-collapse: collapse;
+  min-width: 100%;
+}
+
+th, td {
+  padding: 8px 12px;
+}
+
+th {
+  background: #1e293b;
+  color: #e2e8f0;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+tbody tr {
+  transition: background 0.2s;
+}
+
+tbody tr:hover {
+  background-color: rgba(77, 171, 247, 0.1);
+}
+/* ===== HOME PAGE ===== */
+.home-container {
+  font-family: "Segoe UI", sans-serif;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: #f5f5f5;
+  padding: 30px;
+}
+
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  background-color: rgba(255,255,255,0.05);
+  padding: 15px 25px;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  backdrop-filter: blur(8px);
+}
+
+.home-header h1 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.highlight {
+  color: #4dabf7;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid #4dabf7;
+}
+
+.user-name {
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.logout-button {
+  padding: 6px 12px;
+  background-color: #c62828;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.logout-button:hover {
+  background-color: #b71c1c;
+}
+
+/* Contenido principal */
+.home-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Tarjetas de formulario y lista */
+.card {
+  background-color: rgba(255,255,255,0.05);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.4);
+}
+
+/* Responsividad */
+@media (max-width: 768px) {
+  .home-main {
+    gap: 15px;
+  }
+}

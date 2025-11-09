@@ -5,17 +5,25 @@ using LAMA_API.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 🔹 CORS
+var replitDomain = Environment.GetEnvironmentVariable("REPLIT_DEV_DOMAIN");
+var allowedOrigins = new List<string>
+{
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://lama-medellin.web.app",
+    "https://lama-medellin.firebaseapp.com"
+};
+
+if (!string.IsNullOrEmpty(replitDomain))
+{
+    allowedOrigins.Add($"https://{replitDomain}");
+}
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowReactApp", policy =>
     {
-        policy.WithOrigins(
-            "http://localhost:3000",
-            "http://localhost:3001",
-            "https://lama-medellin.web.app",
-            "https://lama-medellin.firebaseapp.com"
-        )
+        policy.WithOrigins(allowedOrigins.ToArray())
         .AllowAnyHeader()
         .AllowAnyMethod();
     });
@@ -60,17 +68,14 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// 🔹 Middlewares
-app.UseHttpsRedirection();
 app.UseCors("AllowReactApp");
 app.UseFirebaseAuth();
 app.MapControllers();
 
-// 🔹 Ruta privada de prueba
 app.MapGet("/api/private/test", (HttpContext context) =>
 {
     var uid = context.Items["UserId"]?.ToString();
     return uid is null ? Results.Unauthorized() : Results.Ok($"Usuario autenticado: {uid}");
 });
 
-app.Run();
+app.Run("http://localhost:8000");

@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+Lama_Fronted/node_modules/
+
+# .NET
+Lama_Backend/bin/
+Lama_Backend/obj/
+Lama_Backend/*.user
+Lama_Backend/*.suo
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+Lama_Fronted/.env
+Lama_Fronted/.env.local
+
+# Firebase credentials
+firebase-key.json
+Lama_Backend/firebase-key.json
+
+# Build outputs
+Lama_Fronted/build/
+Lama_Backend/publish/
+
+# Database files
+*.db
+*.db-shm
+*.db-wal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.cache/

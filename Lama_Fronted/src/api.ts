@@ -1,8 +1,16 @@
 import axios from "axios";
 import { getAuth } from "firebase/auth";
 
+const getBackendUrl = () => {
+  const replitDomain = process.env.REPLIT_DEV_DOMAIN;
+  if (replitDomain) {
+    return `https://${replitDomain}:8000/api`;
+  }
+  return process.env.REACT_APP_API_URL || "http://localhost:8000/api";
+};
+
 const api = axios.create({
-  baseURL: "https://l-a-m-a-medell-n-members-management.onrender.com/api",
+  baseURL: getBackendUrl(),
 });
 
 api.interceptors.request.use(async (config) => {
@@ -11,7 +19,6 @@ api.interceptors.request.use(async (config) => {
     if (user) {
       const token = await user.getIdToken();
 
-      // ✅ Aseguramos que headers exista y tenga tipo compatible
       config.headers = config.headers || {};
       (config.headers as any).Authorization = `Bearer ${token}`;
     }
@@ -21,7 +28,6 @@ api.interceptors.request.use(async (config) => {
 
   return config;
 });
-
 
 export default api;
 

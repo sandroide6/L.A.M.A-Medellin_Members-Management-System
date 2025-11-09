@@ -74,7 +74,7 @@ cd L.A.M.A-Medell-n-Members-Management-System
 #### Crear Proyecto en Firebase
 1. Ve a [Firebase Console](https://console.firebase.google.com)
 2. Crea un nuevo proyecto llamado "LAMA-Medellin" (o el nombre que prefieras)
-3. Habilita **Authentication** → Sign-in method → Email/Password
+3. Habilita **Authentication** → Sign-in method → **Google**
 4. Crea una base de datos **Firestore** en modo producción
 
 #### Obtener Credenciales
@@ -125,9 +125,14 @@ dotnet restore
 **Terminal 1 - Backend:**
 ```bash
 cd Lama_Backend
-dotnet run
+ASPNETCORE_URLS=http://localhost:8000 dotnet run
 ```
 El backend estará disponible en `http://localhost:8000`
+
+**Nota**: En Windows PowerShell usa:
+```powershell
+$env:ASPNETCORE_URLS="http://localhost:8000"; dotnet run
+```
 
 **Terminal 2 - Frontend:**
 ```bash
@@ -143,8 +148,9 @@ Si estás en Replit, los workflows ya están configurados:
 
 ### 5. Acceder a la Aplicación
 1. Abre tu navegador en `http://localhost:5000`
-2. Regístrate con un correo y contraseña
-3. Inicia sesión y comienza a gestionar miembros
+2. Click en "Iniciar sesión con Google"
+3. Autoriza la aplicación con tu cuenta de Google
+4. Comienza a gestionar miembros
 
 ---
 
@@ -168,7 +174,7 @@ Runtime: .NET
 Branch: main
 Root Directory: Lama_Backend
 Build Command: dotnet publish -c Release -o out
-Start Command: dotnet out/Lama_Backend.dll
+Start Command: dotnet out/LAMA_API.dll
 ```
 
 **Environment:**
@@ -250,24 +256,23 @@ firebase deploy --only hosting
 Firebase te dará una URL como: `https://tu-proyecto.web.app`
 
 ### Actualizar Backend en Producción
-Después de desplegar el frontend, actualiza la configuración de CORS en `Lama_Backend/Program.cs`:
+Después de desplegar el frontend, actualiza la configuración de CORS en `Lama_Backend/Program.cs`.
+
+Agrega las URLs de tu frontend en producción a la lista `allowedOrigins`:
 
 ```csharp
-builder.Services.AddCors(options =>
+var allowedOrigins = new List<string>
 {
-    options.AddPolicy("AllowFrontend", policy =>
-    {
-        policy.WithOrigins(
-            "https://tu-proyecto.web.app",
-            "https://tu-proyecto.firebaseapp.com"
-        )
-        .AllowAnyHeader()
-        .AllowAnyMethod();
-    });
-});
+    "http://localhost:3000",
+    "http://localhost:5000",
+    "https://tu-proyecto.web.app",           // ⬅️ Agrega tu URL de Firebase Hosting
+    "https://tu-proyecto.firebaseapp.com"    // ⬅️ Agrega tu URL alternativa
+};
 ```
 
 Luego, haz commit y push. Render automáticamente re-desplegará.
+
+**Nota**: Asegúrate de reemplazar `tu-proyecto` con el nombre real de tu proyecto de Firebase.
 
 ---
 
@@ -309,7 +314,8 @@ Luego, haz commit y push. Render automáticamente re-desplegará.
 
 ## 🔒 Seguridad
 
-- **Autenticación**: Firebase Authentication con email/password
+- **Autenticación**: Firebase Authentication con Google OAuth
+- **Validación de Tokens**: Backend valida tokens de Firebase en cada petición
 - **Base de Datos**: Firestore con reglas de seguridad
 - **Backend**: CORS configurado solo para orígenes autorizados
 - **Credenciales**: Almacenadas en variables de entorno y archivos secretos
@@ -384,8 +390,10 @@ L.A.M.A-Medell-n-Members-Management-System/
 │   │   └── Miembro.cs
 │   ├── Services/
 │   │   └── FirestoreService.cs
+│   ├── Middleware/
+│   │   └── FirebaseAuthMiddleware.cs
 │   ├── Program.cs
-│   ├── Lama_Backend.csproj
+│   ├── LAMA_API.csproj
 │   └── firebase-key.json (crear)
 │
 └── README.md

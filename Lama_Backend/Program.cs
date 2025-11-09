@@ -79,4 +79,4 @@ app.MapGet("/api/private/test", (HttpContext context) =>
     return uid is null ? Results.Unauthorized() : Results.Ok($"Usuario autenticado: {uid}");
 });
 
-app.Run("http://localhost:8000");
+app.Run();

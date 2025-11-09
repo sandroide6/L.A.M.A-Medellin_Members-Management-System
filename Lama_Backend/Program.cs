@@ -42,21 +42,22 @@ builder.Services.AddScoped<FirestoreService>(provider =>
     return new FirestoreService(httpContextAccessor);
 });
 
-// 🔹 Firebase credentials
 var serviceAccountPath = Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS")
-                            ?? "/etc/secrets/firebase-key.json";
+                            ?? "Lama_Backend/firebase-key.json";
 
-if (!File.Exists(serviceAccountPath))
+if (File.Exists(serviceAccountPath))
 {
-    throw new FileNotFoundException($"No se encontró la clave de Firebase: {serviceAccountPath}");
-}
-
-if (FirebaseApp.DefaultInstance == null)
-{
-    FirebaseApp.Create(new AppOptions
+    if (FirebaseApp.DefaultInstance == null)
     {
-        Credential = GoogleCredential.FromFile(serviceAccountPath)
-    });
+        FirebaseApp.Create(new AppOptions
+        {
+            Credential = GoogleCredential.FromFile(serviceAccountPath)
+        });
+    }
+}
+else
+{
+    Console.WriteLine($"Warning: Firebase credentials not found at {serviceAccountPath}. Some features may not work.");
 }
 
 var app = builder.Build();

@@ -111,62 +111,72 @@ const Reportes: React.FC<Props> = ({ miembros }) => {
   }, [miembros, filtroTipo, filtroCiudad, filtroRango, filtroEstatus, busqueda]);
 
   const exportarPDF = () => {
-    const doc = new jsPDF();
-    
-    doc.setFontSize(16);
-    doc.text("L.A.M.A Medellín - Reporte de Miembros", 14, 15);
-    
-    doc.setFontSize(10);
-    doc.text(`Total: ${miembrosFiltrados.length} miembros`, 14, 25);
-    doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
+    try {
+      const doc = new jsPDF();
+      
+      doc.setFontSize(16);
+      doc.text("L.A.M.A Medellín - Reporte de Miembros", 14, 15);
+      
+      doc.setFontSize(10);
+      doc.text(`Total: ${miembrosFiltrados.length} miembros`, 14, 25);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
 
-    const tableData = miembrosFiltrados.map(m => [
-      m.nombre,
-      m.apellido,
-      m.cedula,
-      m.ciudad,
-      m.celular,
-      m.moto,
-      m.marca,
-      m.rango,
-      m.estatus
-    ]);
+      const tableData = miembrosFiltrados.map(m => [
+        m.nombre,
+        m.apellido,
+        m.cedula,
+        m.ciudad,
+        m.celular,
+        m.moto,
+        m.marca,
+        m.rango,
+        m.estatus
+      ]);
 
-    autoTable(doc, {
-      head: [['Nombre', 'Apellido', 'Cédula', 'Ciudad', 'Celular', 'Moto', 'Marca', 'Rango', 'Estatus']],
-      body: tableData,
-      startY: 35,
-      styles: { fontSize: 8 },
-      headStyles: { fillColor: [41, 128, 185] }
-    });
+      autoTable(doc, {
+        head: [['Nombre', 'Apellido', 'Cédula', 'Ciudad', 'Celular', 'Moto', 'Marca', 'Rango', 'Estatus']],
+        body: tableData,
+        startY: 35,
+        styles: { fontSize: 8 },
+        headStyles: { fillColor: [41, 128, 185] }
+      });
 
-    doc.save(`reporte-lama-${new Date().toISOString().split('T')[0]}.pdf`);
+      doc.save(`reporte-lama-${new Date().toISOString().split('T')[0]}.pdf`);
+    } catch (error) {
+      console.error("Error al exportar PDF:", error);
+      alert("Error al generar el PDF. Por favor, intente nuevamente.");
+    }
   };
 
   const exportarCSV = () => {
-    const headers = [
-      "Nombre", "Apellido", "Cédula", "Fecha Nacimiento", "RH", "EPS", "Ciudad", 
-      "Dirección", "Celular", "Correo", "Contacto Emergencia", "Fecha Ingreso",
-      "Número Miembro", "Cargo", "Rango", "Estatus", "Padrino", "Moto", "Marca",
-      "Año", "Cilindraje", "Placa", "Fecha Licencia", "Fecha SOAT"
-    ];
+    try {
+      const headers = [
+        "Nombre", "Apellido", "Cédula", "Fecha Nacimiento", "RH", "EPS", "Ciudad", 
+        "Dirección", "Celular", "Correo", "Contacto Emergencia", "Fecha Ingreso",
+        "Número Miembro", "Cargo", "Rango", "Estatus", "Padrino", "Moto", "Marca",
+        "Año", "Cilindraje", "Placa", "Fecha Licencia", "Fecha SOAT"
+      ];
 
-    const rows = miembrosFiltrados.map(m => [
-      m.nombre, m.apellido, m.cedula, m.fechaNacimiento, m.rh, m.eps, m.ciudad,
-      m.direccion, m.celular, m.correoElectronico, m.contactoEmergencia, 
-      m.fechaIngreso, m.member, m.cargo, m.rango, m.estatus, m.padrino,
-      m.moto, m.marca, m.anoModelo, m.cilindrajeCC, m.placaMatricula,
-      m.fechaExpedicionLicenciaConduccion, m.fechaExpedicionSOAT
-    ].map(v => `"${v ?? ""}"`));
+      const rows = miembrosFiltrados.map(m => [
+        m.nombre, m.apellido, m.cedula, m.fechaNacimiento, m.rh, m.eps, m.ciudad,
+        m.direccion, m.celular, m.correoElectronico, m.contactoEmergencia, 
+        m.fechaIngreso, m.member, m.cargo, m.rango, m.estatus, m.padrino,
+        m.moto, m.marca, m.anoModelo, m.cilindrajeCC, m.placaMatricula,
+        m.fechaExpedicionLicenciaConduccion, m.fechaExpedicionSOAT
+      ].map(v => `"${v ?? ""}"`));
 
-    const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `reporte-lama-${new Date().toISOString().split('T')[0]}.csv`;
-    link.click();
-    URL.revokeObjectURL(url);
+      const csv = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `reporte-lama-${new Date().toISOString().split('T')[0]}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error al exportar CSV:", error);
+      alert("Error al generar el CSV. Por favor, intente nuevamente.");
+    }
   };
 
   const formatearFecha = (fecha: string | undefined) => {

@@ -3,6 +3,7 @@ import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "./firebaseConfig";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
+import "./styles.css";
 
 
 export default function App() {

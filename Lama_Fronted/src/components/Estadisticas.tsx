@@ -66,71 +66,81 @@ const Estadisticas: React.FC<Props> = ({ miembros }) => {
   }, [miembros]);
 
   const exportarPDF = () => {
-    const doc = new jsPDF();
-    
-    doc.setFontSize(18);
-    doc.text("L.A.M.A Medellín - Estadísticas", 14, 20);
-    
-    doc.setFontSize(12);
-    let y = 35;
-    
-    doc.text(`Total de Miembros: ${stats.total}`, 14, y);
-    y += 10;
-    doc.text(`Edad Promedio: ${stats.edadPromedio} años`, 14, y);
-    y += 10;
-    doc.text(`Cilindraje Promedio: ${stats.cilindrajePromedio} CC`, 14, y);
-    y += 10;
-    doc.text(`Licencias Vigentes: ${stats.conLicenciaVigente}`, 14, y);
-    y += 10;
-    doc.text(`SOATs Vigentes: ${stats.conSOATVigente}`, 14, y);
-    y += 15;
-    
-    doc.setFontSize(14);
-    doc.text("Distribución por Ciudad:", 14, y);
-    y += 8;
-    doc.setFontSize(11);
-    Object.entries(stats.porCiudad).forEach(([ciudad, count]) => {
-      doc.text(`  ${ciudad}: ${count}`, 14, y);
-      y += 6;
-    });
-    
-    y += 10;
-    doc.setFontSize(14);
-    doc.text("Distribución por Marca:", 14, y);
-    y += 8;
-    doc.setFontSize(11);
-    Object.entries(stats.porMarca).slice(0, 10).forEach(([marca, count]) => {
-      doc.text(`  ${marca}: ${count}`, 14, y);
-      y += 6;
-    });
-    
-    doc.save("estadisticas-lama.pdf");
+    try {
+      const doc = new jsPDF();
+      
+      doc.setFontSize(18);
+      doc.text("L.A.M.A Medellín - Estadísticas", 14, 20);
+      
+      doc.setFontSize(12);
+      let y = 35;
+      
+      doc.text(`Total de Miembros: ${stats.total}`, 14, y);
+      y += 10;
+      doc.text(`Edad Promedio: ${stats.edadPromedio} años`, 14, y);
+      y += 10;
+      doc.text(`Cilindraje Promedio: ${stats.cilindrajePromedio} CC`, 14, y);
+      y += 10;
+      doc.text(`Licencias Vigentes: ${stats.conLicenciaVigente}`, 14, y);
+      y += 10;
+      doc.text(`SOATs Vigentes: ${stats.conSOATVigente}`, 14, y);
+      y += 15;
+      
+      doc.setFontSize(14);
+      doc.text("Distribución por Ciudad:", 14, y);
+      y += 8;
+      doc.setFontSize(11);
+      Object.entries(stats.porCiudad).forEach(([ciudad, count]) => {
+        doc.text(`  ${ciudad}: ${count}`, 14, y);
+        y += 6;
+      });
+      
+      y += 10;
+      doc.setFontSize(14);
+      doc.text("Distribución por Marca:", 14, y);
+      y += 8;
+      doc.setFontSize(11);
+      Object.entries(stats.porMarca).slice(0, 10).forEach(([marca, count]) => {
+        doc.text(`  ${marca}: ${count}`, 14, y);
+        y += 6;
+      });
+      
+      doc.save("estadisticas-lama.pdf");
+    } catch (error) {
+      console.error("Error al exportar PDF:", error);
+      alert("Error al generar el PDF. Por favor, intente nuevamente.");
+    }
   };
 
   const exportarCSV = () => {
-    const data = [
-      ["Métrica", "Valor"],
-      ["Total de Miembros", stats.total],
-      ["Edad Promedio", `${stats.edadPromedio} años`],
-      ["Cilindraje Promedio", `${stats.cilindrajePromedio} CC`],
-      ["Licencias Vigentes", stats.conLicenciaVigente],
-      ["SOATs Vigentes", stats.conSOATVigente],
-      [""],
-      ["Ciudad", "Cantidad"],
-      ...Object.entries(stats.porCiudad),
-      [""],
-      ["Marca", "Cantidad"],
-      ...Object.entries(stats.porMarca)
-    ];
+    try {
+      const data = [
+        ["Métrica", "Valor"],
+        ["Total de Miembros", stats.total],
+        ["Edad Promedio", `${stats.edadPromedio} años`],
+        ["Cilindraje Promedio", `${stats.cilindrajePromedio} CC`],
+        ["Licencias Vigentes", stats.conLicenciaVigente],
+        ["SOATs Vigentes", stats.conSOATVigente],
+        [""],
+        ["Ciudad", "Cantidad"],
+        ...Object.entries(stats.porCiudad),
+        [""],
+        ["Marca", "Cantidad"],
+        ...Object.entries(stats.porMarca)
+      ];
 
-    const csv = data.map(row => row.join(",")).join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "estadisticas-lama.csv";
-    link.click();
-    URL.revokeObjectURL(url);
+      const csv = data.map(row => row.join(",")).join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "estadisticas-lama.csv";
+      link.click();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error al exportar CSV:", error);
+      alert("Error al generar el CSV. Por favor, intente nuevamente.");
+    }
   };
 
   return (

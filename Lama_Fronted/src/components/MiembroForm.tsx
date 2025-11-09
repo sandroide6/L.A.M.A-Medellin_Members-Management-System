@@ -90,13 +90,18 @@ const MiembroForm: React.FC<Props> = ({ miembroSeleccionado, onSave, onCancel })
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-z]{2,}$/;
     const urlImagenRegex = /^https?:\/\/.+\.(jpg|jpeg|png|webp|svg)$/i;
 
+    const camposObligatorios = ["nombre", "apellido", "cedula", "celular", "correoElectronico"];
+
     secciones.flatMap(s => s.campos).forEach(c => {
       const valor = (miembro as any)[c.name];
-
-      if (!valor || valor.toString().trim() === "") {
+      const esObligatorio = camposObligatorios.includes(c.name);
+      
+      if (esObligatorio && (!valor || valor.toString().trim() === "")) {
         nuevosErrores[c.name] = `${c.placeholder} es obligatorio.`;
         return;
       }
+
+      if (!valor || valor.toString().trim() === "") return;
 
       switch (c.name) {
         case "cedula":

@@ -1,7 +1,9 @@
 import React from "react";
 
+type TabType = "inicio" | "registro" | "listado" | "estadisticas" | "reportes";
+
 interface Props {
-  onNavigate: (tab: string) => void;
+  onNavigate: (tab: TabType) => void;
 }
 
 const Inicio: React.FC<Props> = ({ onNavigate }) => {

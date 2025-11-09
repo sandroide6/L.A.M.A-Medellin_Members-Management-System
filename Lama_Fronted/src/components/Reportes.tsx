@@ -122,15 +122,15 @@ const Reportes: React.FC<Props> = ({ miembros }) => {
       doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
 
       const tableData = miembrosFiltrados.map(m => [
-        m.nombre,
-        m.apellido,
-        m.cedula,
-        m.ciudad,
-        m.celular,
-        m.moto,
-        m.marca,
-        m.rango,
-        m.estatus
+        m.nombre || "",
+        m.apellido || "",
+        m.cedula || "",
+        m.ciudad || "",
+        m.celular || "",
+        m.moto || "",
+        m.marca || "",
+        m.rango || "",
+        m.estatus || ""
       ]);
 
       autoTable(doc, {
